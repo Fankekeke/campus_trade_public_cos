@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cc.mrbird.febs.cos.dao.OrderInfoMapper">
+<mapper namespace="cc.mrbird.febs.stock.dao.OrderInfoMapper">
 
     <!-- 分页获取订单信息 -->
     <select id="selectOrderPage" resultType="java.util.LinkedHashMap">
@@ -52,6 +52,10 @@
     <!-- 查询总收益 -->
     <select id="selectOrderPrice" resultType="java.math.BigDecimal">
         SELECT IFNULL(SUM(oi.total_cost), 0) FROM order_info oi
+        where 1 = 1
+        <if test="pharmacyId != null">
+            AND oi.pharmacy_id = #{pharmacyId}
+        </if>
     </select>
 
     <!-- 订单销售商品类别统计 -->
@@ -60,7 +64,12 @@
         order_detail od
         left join drug_info di on
         (di.id = od.drug_id)
+        left join order_info oi on
+        (oi.id = od.order_id)
         where 1 = 1
+        <if test="pharmacyId != null">
+            AND oi.pharmacy_id = #{pharmacyId}
+        </if>
         group by od.drug_id
     </select>
 
@@ -143,7 +152,7 @@
     </select>
 
     <!-- 获取本月订单信息 -->
-    <select id="selectOrderByMonth" resultType="cc.mrbird.febs.cos.entity.OrderInfo">
+    <select id="selectOrderByMonth" resultType="cc.mrbird.febs.stock.entity.OrderInfo">
         select
         oi.id,
         oi.code,
@@ -164,10 +173,13 @@
         DATE_FORMAT( oi.create_date, '%Y%m' ) = DATE_FORMAT(
         CURDATE(),
         '%Y%m')
+        <if test="pharmacyId != null">
+            AND oi.pharmacy_id = #{pharmacyId}
+        </if>
     </select>
 
     <!-- 获取本年订单信息 -->
-    <select id="selectOrderByYear" resultType="cc.mrbird.febs.cos.entity.OrderInfo">
+    <select id="selectOrderByYear" resultType="cc.mrbird.febs.stock.entity.OrderInfo">
         select
         oi.id,
         oi.code,
@@ -188,6 +200,9 @@
         DATE_FORMAT( oi.create_date, '%Y' ) = DATE_FORMAT(
         CURDATE(),
         '%Y')
+        <if test="pharmacyId != null">
+            AND oi.pharmacy_id = #{pharmacyId}
+        </if>
     </select>
 
     <!-- 获取用户订单物流 -->

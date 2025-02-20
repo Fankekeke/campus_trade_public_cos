@@ -1,8 +1,8 @@
 package cc.mrbird.febs.stock.service.impl;
 
-import cc.mrbird.febs.stock.entity.DrugInfo;
-import cc.mrbird.febs.stock.dao.DrugInfoMapper;
-import cc.mrbird.febs.stock.service.IDrugInfoService;
+import cc.mrbird.febs.stock.entity.GoodsInfo;
+import cc.mrbird.febs.stock.dao.GoodsInfoMapper;
+import cc.mrbird.febs.stock.service.IGoodsInfoService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,17 +14,17 @@ import java.util.LinkedHashMap;
  * @author FanK
  */
 @Service
-public class DrugInfoServiceImpl extends ServiceImpl<DrugInfoMapper, DrugInfo> implements IDrugInfoService {
+public class GoodsInfoServiceImpl extends ServiceImpl<GoodsInfoMapper, GoodsInfo> implements IGoodsInfoService {
 
     /**
      * 分页获取商品信息
      *
      * @param page     分页对象
-     * @param drugInfo 商品信息
+     * @param goodsInfo 商品信息
      * @return 结果
      */
     @Override
-    public IPage<LinkedHashMap<String, Object>> selectDrugPage(Page<DrugInfo> page, DrugInfo drugInfo) {
-        return baseMapper.selectDrugPage(page, drugInfo);
+    public IPage<LinkedHashMap<String, Object>> selectDrugPage(Page<GoodsInfo> page, GoodsInfo goodsInfo) {
+        return baseMapper.selectDrugPage(page, goodsInfo);
     }
 }

@@ -28,17 +28,17 @@
         drug_info
         where
         1 = 1
-        <if test="drugInfo.code != null and drugInfo.code != ''">
-            AND code LIKE CONCAT('%',#{drugInfo.code},'%')
+        <if test="goodsInfo.code != null and goodsInfo.code != ''">
+            AND code LIKE CONCAT('%',#{goodsInfo.code},'%')
         </if>
-        <if test="drugInfo.name != null and drugInfo.name != ''">
-            AND name LIKE CONCAT('%',#{drugInfo.name},'%')
+        <if test="goodsInfo.name != null and goodsInfo.name != ''">
+            AND name LIKE CONCAT('%',#{goodsInfo.name},'%')
         </if>
-        <if test="drugInfo.brand != null and drugInfo.brand != ''">
-            AND brand LIKE CONCAT('%',#{drugInfo.brand},'%')
+        <if test="goodsInfo.brand != null and goodsInfo.brand != ''">
+            AND brand LIKE CONCAT('%',#{goodsInfo.brand},'%')
         </if>
-        <if test="drugInfo.category != null">
-            AND category = #{drugInfo.category}
+        <if test="goodsInfo.category != null">
+            AND category = #{goodsInfo.category}
         </if>
         order by
         create_date desc

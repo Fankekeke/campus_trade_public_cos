@@ -2,8 +2,8 @@ package cc.mrbird.febs.stock.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
-import cc.mrbird.febs.stock.entity.DrugInfo;
-import cc.mrbird.febs.stock.service.IDrugInfoService;
+import cc.mrbird.febs.stock.entity.GoodsInfo;
+import cc.mrbird.febs.stock.service.IGoodsInfoService;
 import cc.mrbird.febs.stock.service.IPharmacyInfoService;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,22 +21,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/stock/drug-info")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class DrugInfoController {
+public class GoodsInfoController {
 
-    private final IDrugInfoService drugInfoService;
+    private final IGoodsInfoService drugInfoService;
 
     private final IPharmacyInfoService pharmacyInfoService;
 
     /**
      * 分页获取商品信息
      *
-     * @param page     分页对象
-     * @param drugInfo 商品信息
+     * @param page      分页对象
+     * @param goodsInfo 商品信息
      * @return 结果
      */
     @GetMapping("/page")
-    public R page(Page<DrugInfo> page, DrugInfo drugInfo) {
-        return R.ok(drugInfoService.selectDrugPage(page, drugInfo));
+    public R page(Page<GoodsInfo> page, GoodsInfo goodsInfo) {
+        return R.ok(drugInfoService.selectDrugPage(page, goodsInfo));
     }
 
     /**
@@ -71,25 +71,25 @@ public class DrugInfoController {
     /**
      * 新增商品信息
      *
-     * @param drugInfo 商品信息
+     * @param goodsInfo 商品信息
      * @return 结果
      */
     @PostMapping
-    public R save(DrugInfo drugInfo) {
-        drugInfo.setCode("DG-" + System.currentTimeMillis());
-        drugInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
-        return R.ok(drugInfoService.save(drugInfo));
+    public R save(GoodsInfo goodsInfo) {
+        goodsInfo.setCode("DG-" + System.currentTimeMillis());
+        goodsInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        return R.ok(drugInfoService.save(goodsInfo));
     }
 
     /**
      * 修改商品信息
      *
-     * @param drugInfo 商品信息
+     * @param goodsInfo 商品信息
      * @return 结果
      */
     @PutMapping
-    public R edit(DrugInfo drugInfo) {
-        return R.ok(drugInfoService.updateById(drugInfo));
+    public R edit(GoodsInfo goodsInfo) {
+        return R.ok(drugInfoService.updateById(goodsInfo));
     }
 
     /**

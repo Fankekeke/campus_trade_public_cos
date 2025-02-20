@@ -1,6 +1,6 @@
 package cc.mrbird.febs.stock.dao;
 
-import cc.mrbird.febs.stock.entity.DrugInfo;
+import cc.mrbird.febs.stock.entity.GoodsInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,14 +11,14 @@ import java.util.LinkedHashMap;
 /**
  * @author FanK
  */
-public interface DrugInfoMapper extends BaseMapper<DrugInfo> {
+public interface GoodsInfoMapper extends BaseMapper<GoodsInfo> {
 
     /**
      * 分页获取商品信息
      *
      * @param page     分页对象
-     * @param drugInfo 商品信息
+     * @param goodsInfo 商品信息
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> selectDrugPage(Page<DrugInfo> page, @Param("drugInfo") DrugInfo drugInfo);
+    IPage<LinkedHashMap<String, Object>> selectDrugPage(Page<GoodsInfo> page, @Param("drugInfo") GoodsInfo goodsInfo);
 }

@@ -29,21 +29,21 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
      *
      * @return 结果
      */
-    BigDecimal selectOrderPrice();
+    BigDecimal selectOrderPrice(@Param("pharmacyId") Integer pharmacyId);
 
     /**
      * 获取本月订单信息
      *
      * @return 结果
      */
-    List<OrderInfo> selectOrderByMonth();
+    List<OrderInfo> selectOrderByMonth(@Param("pharmacyId") Integer pharmacyId);
 
     /**
      * 获取本年订单信息
      *
      * @return 结果
      */
-    List<OrderInfo> selectOrderByYear();
+    List<OrderInfo> selectOrderByYear(@Param("pharmacyId") Integer pharmacyId);
 
     /**
      * 十天内订单数量统计
@@ -64,7 +64,7 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
      *
      * @return 结果
      */
-    List<LinkedHashMap<String, Object>> selectOrderDrugType();
+    List<LinkedHashMap<String, Object>> selectOrderDrugType(@Param("pharmacyId") Integer pharmacyId);
 
     /**
      * 获取用户订单物流

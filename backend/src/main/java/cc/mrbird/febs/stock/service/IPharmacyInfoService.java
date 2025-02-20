@@ -56,7 +56,12 @@ public interface IPharmacyInfoService extends IService<PharmacyInfo> {
      */
     List<LinkedHashMap<String, Object>> selectStockByPharmacy(Integer pharmacyId);
 
-
+    /**
+     * 主页数据
+     *
+     * @return 结果
+     */
+    LinkedHashMap<String, Object> homeData(Integer pharmacyId);
 
     /**
      * 根据月份获取商品统计情况

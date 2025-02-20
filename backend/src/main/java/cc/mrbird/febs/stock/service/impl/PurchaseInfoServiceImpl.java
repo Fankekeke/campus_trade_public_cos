@@ -1,14 +1,13 @@
 package cc.mrbird.febs.stock.service.impl;
 
-import cc.mrbird.febs.stock.entity.DrugInfo;
+import cc.mrbird.febs.stock.entity.GoodsInfo;
 import cc.mrbird.febs.stock.entity.PharmacyInventory;
 import cc.mrbird.febs.stock.entity.PurchaseInfo;
 import cc.mrbird.febs.stock.dao.PurchaseInfoMapper;
-import cc.mrbird.febs.stock.service.IDrugInfoService;
+import cc.mrbird.febs.stock.service.IGoodsInfoService;
 import cc.mrbird.febs.stock.service.IPharmacyInventoryService;
 import cc.mrbird.febs.stock.service.IPurchaseInfoService;
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +29,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PurchaseInfoServiceImpl extends ServiceImpl<PurchaseInfoMapper, PurchaseInfo> implements IPurchaseInfoService {
 
-    private final IDrugInfoService drugInfoService;
+    private final IGoodsInfoService drugInfoService;
 
     private final IPharmacyInventoryService inventoryService;
 
@@ -108,16 +106,16 @@ public class PurchaseInfoServiceImpl extends ServiceImpl<PurchaseInfoMapper, Pur
 
         List<PharmacyInventory> inventoryList = JSONUtil.toList(purchase.getPurchaseDrug(), PharmacyInventory.class);
         List<Integer> drugIds = inventoryList.stream().map(PharmacyInventory::getDrugId).collect(Collectors.toList());
-        List<DrugInfo> drugInfoList = (List<DrugInfo>) drugInfoService.listByIds(drugIds);
+        List<GoodsInfo> goodsInfoList = (List<GoodsInfo>) drugInfoService.listByIds(drugIds);
 
-        Map<Integer, DrugInfo> drugMap = drugInfoList.stream().collect(Collectors.toMap(DrugInfo::getId, e -> e));
+        Map<Integer, GoodsInfo> drugMap = goodsInfoList.stream().collect(Collectors.toMap(GoodsInfo::getId, e -> e));
         for (PharmacyInventory pharmacy : inventoryList) {
-            DrugInfo drugInfo = drugMap.get(pharmacy.getDrugId());
-            if (null == drugInfo) {
+            GoodsInfo goodsInfo = drugMap.get(pharmacy.getDrugId());
+            if (null == goodsInfo) {
                 continue;
             }
-            pharmacy.setDrugName(drugInfo.getName());
-            pharmacy.setImages(drugInfo.getImages());
+            pharmacy.setDrugName(goodsInfo.getName());
+            pharmacy.setImages(goodsInfo.getImages());
         }
 
 

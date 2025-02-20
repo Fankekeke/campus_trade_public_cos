@@ -1,6 +1,8 @@
 package cc.mrbird.febs.stock.service.impl;
 
 import cc.mrbird.febs.common.exception.FebsException;
+import cc.mrbird.febs.cos.entity.BulletinInfo;
+import cc.mrbird.febs.cos.service.IBulletinInfoService;
 import cc.mrbird.febs.stock.dao.OrderDetailMapper;
 import cc.mrbird.febs.stock.dao.OrderInfoMapper;
 import cc.mrbird.febs.stock.entity.*;
@@ -34,13 +36,15 @@ public class PharmacyInfoServiceImpl extends ServiceImpl<PharmacyInfoMapper, Pha
 
     private final IPharmacyInventoryService pharmacyInventoryService;
 
-    private final IDrugInfoService drugInfoService;
+    private final IGoodsInfoService drugInfoService;
 
     private final OrderInfoMapper orderInfoMapper;
 
     private final OrderDetailMapper orderDetailMapper;
 
     private final PharmacyInfoMapper pharmacyInfoMapper;
+
+    private final IBulletinInfoService bulletinInfoService;
 
 
     /**
@@ -66,7 +70,7 @@ public class PharmacyInfoServiceImpl extends ServiceImpl<PharmacyInfoMapper, Pha
         // 所有商家信息
         List<PharmacyInfo> pharmacyInfoList = this.list(Wrappers.<PharmacyInfo>lambdaQuery().eq(PharmacyInfo::getBusinessStatus, 1));
         // 本月订单数据
-        List<OrderInfo> orderInfoList = orderInfoMapper.selectOrderByMonth();
+        List<OrderInfo> orderInfoList = orderInfoMapper.selectOrderByMonth(null);
         if (CollectionUtil.isEmpty(orderInfoList) || CollectionUtil.isEmpty(pharmacyInfoList)) {
             return Collections.emptyList();
         }
@@ -155,8 +159,8 @@ public class PharmacyInfoServiceImpl extends ServiceImpl<PharmacyInfoMapper, Pha
         // 商家信息
         List<PharmacyInfo> pharmacyInfoList = this.list(Wrappers.<PharmacyInfo>lambdaQuery().eq(PharmacyInfo::getBusinessStatus, 1));
         // 商品信息
-        List<DrugInfo> drugInfoList = drugInfoService.list();
-        if (CollectionUtil.isEmpty(pharmacyInventoryList) || CollectionUtil.isEmpty(pharmacyInfoList) || CollectionUtil.isEmpty(drugInfoList)) {
+        List<GoodsInfo> goodsInfoList = drugInfoService.list();
+        if (CollectionUtil.isEmpty(pharmacyInventoryList) || CollectionUtil.isEmpty(pharmacyInfoList) || CollectionUtil.isEmpty(goodsInfoList)) {
             return Collections.emptyList();
         }
 
@@ -167,7 +171,7 @@ public class PharmacyInfoServiceImpl extends ServiceImpl<PharmacyInfoMapper, Pha
         // 商家信息转MAP
         Map<Integer, String> pharmacyMap = pharmacyInfoList.stream().collect(Collectors.toMap(PharmacyInfo::getId, PharmacyInfo::getName));
         // 商品信息转MAP
-        Map<Integer, String> drugMap = drugInfoList.stream().collect(Collectors.toMap(DrugInfo::getId, DrugInfo::getName));
+        Map<Integer, String> drugMap = goodsInfoList.stream().collect(Collectors.toMap(GoodsInfo::getId, GoodsInfo::getName));
 
         pharmacyInfoList.forEach(e -> {
             LinkedHashMap<String, Object> item = new LinkedHashMap<String, Object>() {
@@ -193,6 +197,47 @@ public class PharmacyInfoServiceImpl extends ServiceImpl<PharmacyInfoMapper, Pha
             item.put("inventory", drugList);
             result.add(item);
         });
+        return result;
+    }
+
+    /**
+     * 主页数据
+     *
+     * @return 结果
+     */
+    @Override
+    public LinkedHashMap<String, Object> homeData(Integer pharmacyId) {
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+        // 总订单数量
+        result.put("orderCode", orderInfoService.count());
+        // 总收益
+        result.put("orderPrice", orderInfoMapper.selectOrderPrice(pharmacyId));
+        // 店铺数量
+        result.put("pharmacyNum", pharmacyInfoMapper.selectCount(Wrappers.<PharmacyInfo>lambdaQuery().eq(PharmacyInfo::getBusinessStatus, 1)));
+
+        // 本月订单数量
+        List<OrderInfo> orderList = orderInfoMapper.selectOrderByMonth(pharmacyId);
+        result.put("monthOrderNum", CollectionUtil.isEmpty(orderList) ? 0 : orderList.size());
+        BigDecimal orderPrice = orderList.stream().map(OrderInfo::getTotalCost).reduce(BigDecimal.ZERO, BigDecimal::add);
+        // 获取本月收益
+        result.put("monthOrderPrice", orderPrice);
+
+        // 本年订单数量
+        List<OrderInfo> orderYearList = orderInfoMapper.selectOrderByYear(pharmacyId);
+        result.put("yearOrderNum", CollectionUtil.isEmpty(orderYearList) ? 0 : orderYearList.size());
+        // 本年总收益
+        BigDecimal orderYearPrice = orderYearList.stream().map(OrderInfo::getTotalCost).reduce(BigDecimal.ZERO, BigDecimal::add);
+        result.put("yearOrderPrice", orderYearPrice);
+
+        // 公告信息
+        result.put("bulletin", bulletinInfoService.list(Wrappers.<BulletinInfo>lambdaQuery()));
+
+        // 近十天内订单统计
+        result.put("orderNumWithinDays", orderInfoMapper.selectOrderNumWithinDays(null));
+        // 近十天内收益统计
+        result.put("orderPriceWithinDays", orderInfoMapper.selectOrderPriceWithinDays(null));
+        // 订单销售药品类别统计
+        result.put("orderDrugType", orderInfoMapper.selectOrderDrugType(pharmacyId));
         return result;
     }
 
@@ -234,8 +279,8 @@ public class PharmacyInfoServiceImpl extends ServiceImpl<PharmacyInfoMapper, Pha
         Map<Integer, List<OrderDetail>> drugDetailMap = detailList.stream().collect(Collectors.groupingBy(OrderDetail::getDrugId));
 
         // 商品信息
-        List<DrugInfo> drugInfoList = (List<DrugInfo>) drugInfoService.listByIds(drugDetailMap.keySet());
-        Map<Integer, String> drugMap = drugInfoList.stream().collect(Collectors.toMap(DrugInfo::getId, DrugInfo::getName));
+        List<GoodsInfo> goodsInfoList = (List<GoodsInfo>) drugInfoService.listByIds(drugDetailMap.keySet());
+        Map<Integer, String> drugMap = goodsInfoList.stream().collect(Collectors.toMap(GoodsInfo::getId, GoodsInfo::getName));
 
         drugDetailMap.forEach((key, value) -> {
             String drugName = drugMap.get(key);
