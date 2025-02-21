@@ -1,44 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cc.mrbird.febs.cos.dao.DrugInfoMapper">
+<mapper namespace="cc.mrbird.febs.stock.dao.GoodsInfoMapper">
 
     <!-- 分页获取商品信息 -->
     <select id="selectDrugPage" resultType="java.util.LinkedHashMap">
         select
-        id,
-        code,
-        name,
-        brand,
-        category,
-        classification,
-        common_name,
-        dosage_form,
-        usages,
-        applicable_symptoms,
-        applicable_disease,
-        packing_list,
-        dosage_use,
-        validity_period,
-        approval_number,
-        manufacturer,
-        unit_price,
-        create_date,
-        images
+        di.id,
+        di.code,
+        di.name,
+        di.brand,
+        di.category,
+        di.classification,
+        di.common_name,
+        di.dosage_form,
+        di.usages,
+        di.applicable_symptoms,
+        di.applicable_disease,
+        di.packing_list,
+        di.dosage_use,
+        di.validity_period,
+        di.approval_number,
+        di.manufacturer,
+        di.unit_price,
+        di.create_date,
+        di.images,
+        di.pharmacy_id,
+        phi.name AS pharmacyName,
+        phi.address,
+        phi.legal_person,
+        phi.phone as pharmacyPhone
         from
-        drug_info
+        drug_info di
+        left join pharmacy_info phi on
+        (phi.id = di.pharmacy_id)
         where
         1 = 1
         <if test="goodsInfo.code != null and goodsInfo.code != ''">
-            AND code LIKE CONCAT('%',#{goodsInfo.code},'%')
+            AND di.code LIKE CONCAT('%',#{goodsInfo.code},'%')
         </if>
         <if test="goodsInfo.name != null and goodsInfo.name != ''">
-            AND name LIKE CONCAT('%',#{goodsInfo.name},'%')
+            AND di.name LIKE CONCAT('%',#{goodsInfo.name},'%')
         </if>
         <if test="goodsInfo.brand != null and goodsInfo.brand != ''">
-            AND brand LIKE CONCAT('%',#{goodsInfo.brand},'%')
+            AND di.brand LIKE CONCAT('%',#{goodsInfo.brand},'%')
         </if>
         <if test="goodsInfo.category != null">
-            AND category = #{goodsInfo.category}
+            AND di.category = #{goodsInfo.category}
+        </if>
+        <if test="goodsInfo.pharmacyId != null">
+            AND phi.user_id = #{goodsInfo.pharmacyId}
         </if>
         order by
         create_date desc

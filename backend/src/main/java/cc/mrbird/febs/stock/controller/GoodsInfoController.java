@@ -3,9 +3,11 @@ package cc.mrbird.febs.stock.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.stock.entity.GoodsInfo;
+import cc.mrbird.febs.stock.entity.PharmacyInfo;
 import cc.mrbird.febs.stock.service.IGoodsInfoService;
 import cc.mrbird.febs.stock.service.IPharmacyInfoService;
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,11 @@ public class GoodsInfoController {
     public R save(GoodsInfo goodsInfo) {
         goodsInfo.setCode("DG-" + System.currentTimeMillis());
         goodsInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        // 设置商家信息
+        PharmacyInfo pharmacyInfo = pharmacyInfoService.getOne(Wrappers.<PharmacyInfo>lambdaQuery().eq(PharmacyInfo::getUserId, goodsInfo.getPharmacyId()));
+        if (pharmacyInfo != null) {
+            goodsInfo.setPharmacyId(pharmacyInfo.getId());
+        }
         return R.ok(drugInfoService.save(goodsInfo));
     }
 

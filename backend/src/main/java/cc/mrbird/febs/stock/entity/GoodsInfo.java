@@ -119,5 +119,10 @@ public class GoodsInfo implements Serializable {
      */
     private String images;
 
+    /**
+     * 所属商家
+     */
+    private Integer pharmacyId;
+
 
 }
