@@ -77,25 +77,25 @@
           <apexchart v-if="!loading" type="donut" height="270" :options="chartOptions2" :series="series2"></apexchart>
         </a-card>
       </a-col>
-      <a-col :span="15">
-        <a-card hoverable :loading="loading" :bordered="false" title="公告信息" style="margin-top: 15px">
-          <div style="padding: 0 22px">
-            <a-list item-layout="vertical" :pagination="pagination" :data-source="bulletinList">
-              <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
-                <template slot="actions">
-              <span key="message">
-                <a-icon type="message" style="margin-right: 8px" />
-                {{ item.date }}
-              </span>
-                </template>
-                <a-list-item-meta :description="item.content" style="font-size: 14px">
-                  <a slot="title">{{ item.title }}</a>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-          </div>
-        </a-card>
-      </a-col>
+<!--      <a-col :span="15">-->
+<!--        <a-card hoverable :loading="loading" :bordered="false" title="公告信息" style="margin-top: 15px">-->
+<!--          <div style="padding: 0 22px">-->
+<!--            <a-list item-layout="vertical" :pagination="pagination" :data-source="bulletinList">-->
+<!--              <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">-->
+<!--                <template slot="actions">-->
+<!--              <span key="message">-->
+<!--                <a-icon type="message" style="margin-right: 8px" />-->
+<!--                {{ item.date }}-->
+<!--              </span>-->
+<!--                </template>-->
+<!--                <a-list-item-meta :description="item.content" style="font-size: 14px">-->
+<!--                  <a slot="title">{{ item.title }}</a>-->
+<!--                </a-list-item-meta>-->
+<!--              </a-list-item>-->
+<!--            </a-list>-->
+<!--          </div>-->
+<!--        </a-card>-->
+<!--      </a-col>-->
     </a-row>
   </div>
 </template>

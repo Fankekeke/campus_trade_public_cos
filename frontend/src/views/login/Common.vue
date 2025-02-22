@@ -48,7 +48,8 @@ export default {
     height: 100vh;
     overflow: auto;
     background: #f0f2f5 url(../../../static/img/river-6968614.png) no-repeat center ;
-    background-size: cover;
+    background-size: contain;
+    background-color: white;
     .content {
       padding: 32px 0;
       flex: 1;

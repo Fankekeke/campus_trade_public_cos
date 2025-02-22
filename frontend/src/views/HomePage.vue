@@ -3,9 +3,9 @@
     <a-row :gutter="8" class="head-info">
       <a-card class="head-info-card">
         <a-col :span="12">
-          <div class="head-info-avatar">
-            <img alt="头像" :src="avatar">
-          </div>
+<!--          <div class="head-info-avatar">-->
+<!--            <img alt="头像" :src="avatar">-->
+<!--          </div>-->
           <div class="head-info-count">
             <div class="head-info-welcome">
               {{welcomeMessage}}
@@ -38,7 +38,8 @@
         </a-col>
       </a-card>
       <a-col :span="24">
-        <work></work>
+        <work v-if="user.roleId == 74 || user.roleId == 75"></work>
+        <home1 v-if="user.roleId == 76"></home1>
       </a-col>
     </a-row>
     <home @setTitle="setTitleData"></home>
@@ -56,12 +57,13 @@ import HeadInfo from '@/views/common/HeadInfo'
 import {mapState} from 'vuex'
 import moment from 'moment'
 import Home from './manage/component/home/Home'
+import Home1 from './manage/component/home1/Home'
 import Work from './manage/component/work/Work'
 moment.locale('zh-cn')
 
 export default {
   name: 'HomePage',
-  components: {Home, Work, HeadInfo},
+  components: {Home, Home1, Work, HeadInfo},
   data () {
     return {
       titleData: {

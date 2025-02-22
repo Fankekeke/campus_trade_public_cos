@@ -3,10 +3,10 @@ package cc.mrbird.febs.stock.controller;
 
 import cc.mrbird.febs.common.exception.FebsException;
 import cc.mrbird.febs.common.utils.R;
-import cc.mrbird.febs.stock.entity.OrderInfo;
+import cc.mrbird.febs.stock.entity.GoodsOrderInfo;
+import cc.mrbird.febs.stock.entity.vo.GoodsOrderInfoVo;
 import cc.mrbird.febs.stock.entity.vo.OrderDetailVo;
-import cc.mrbird.febs.stock.entity.vo.OrderInfoVo;
-import cc.mrbird.febs.stock.service.IOrderInfoService;
+import cc.mrbird.febs.stock.service.IGoodsOrderInfoService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +21,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/stock/order-info")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class OrderInfoController {
+public class GoodsOrderInfoController {
 
-    private final IOrderInfoService orderInfoService;
+    private final IGoodsOrderInfoService orderInfoService;
 
     /**
      * 分页获取订单信息
      *
      * @param page      分页对象
-     * @param orderInfo 订单信息
+     * @param goodsOrderInfo 订单信息
      * @return 结果
      */
     @GetMapping("/page")
-    public R page(Page<OrderInfo> page, OrderInfo orderInfo) {
-        return R.ok(orderInfoService.selectOrderPage(page, orderInfo));
+    public R page(Page<GoodsOrderInfo> page, GoodsOrderInfo goodsOrderInfo) {
+        return R.ok(orderInfoService.selectOrderPage(page, goodsOrderInfo));
     }
 
     /**
@@ -49,13 +49,35 @@ public class OrderInfoController {
     }
 
     /**
+     * 订单付款
+     *
+     * @param orderCode 订单编号
+     * @return 结果
+     */
+    @GetMapping("/rollback")
+    public R rollback(@RequestParam("orderCode") String orderCode) {
+        return R.ok(orderInfoService.update(Wrappers.<GoodsOrderInfo>lambdaUpdate().set(GoodsOrderInfo::getOrderStatus, 3).eq(GoodsOrderInfo::getCode, orderCode)));
+    }
+
+    /**
+     * 用户提交支付订单
+     *
+     * @param orderDetailVo 订单信息
+     * @return 结果
+     */
+    @PostMapping("/orderSubmitPay")
+    public R orderSubmitPay(OrderDetailVo orderDetailVo) throws FebsException {
+        return R.ok(orderInfoService.orderSubmitPay(orderDetailVo));
+    }
+
+    /**
      * 平台内添加订单
      *
      * @param orderInfoVo 订单信息
      * @return 结果
      */
     @PostMapping("/platform")
-    public R saveOrderByPlatform(OrderInfoVo orderInfoVo) {
+    public R saveOrderByPlatform(GoodsOrderInfoVo orderInfoVo) {
         return R.ok(orderInfoService.orderAdd(orderInfoVo, true));
     }
 
@@ -66,7 +88,7 @@ public class OrderInfoController {
      * @return 结果
      */
     @PostMapping("/order")
-    public R saveOrder(OrderInfoVo orderInfoVo) {
+    public R saveOrder(GoodsOrderInfoVo orderInfoVo) {
         return R.ok(orderInfoService.orderAdd(orderInfoVo, false));
     }
 
@@ -103,7 +125,7 @@ public class OrderInfoController {
      */
     @GetMapping("/edit/status")
     public R setOrderStatus(@RequestParam("orderId") Integer orderId, @RequestParam("status") Integer status) {
-        return R.ok(orderInfoService.update(Wrappers.<OrderInfo>lambdaUpdate().set(OrderInfo::getOrderStatus, status).eq(OrderInfo::getId, orderId)));
+        return R.ok(orderInfoService.update(Wrappers.<GoodsOrderInfo>lambdaUpdate().set(GoodsOrderInfo::getOrderStatus, status).eq(GoodsOrderInfo::getId, orderId)));
     }
 
     /**
@@ -125,7 +147,7 @@ public class OrderInfoController {
      */
     @GetMapping("/detail/{code}")
     public R detail(@PathVariable("code") String code) {
-        return R.ok(orderInfoService.getOne(Wrappers.<OrderInfo>lambdaQuery().eq(OrderInfo::getCode, code)));
+        return R.ok(orderInfoService.getOne(Wrappers.<GoodsOrderInfo>lambdaQuery().eq(GoodsOrderInfo::getCode, code)));
     }
 
     /**
@@ -141,23 +163,23 @@ public class OrderInfoController {
     /**
      * 新增订单信息
      *
-     * @param orderInfo 订单信息
+     * @param goodsOrderInfo 订单信息
      * @return 结果
      */
     @PostMapping
-    public R save(OrderInfo orderInfo) {
-        return R.ok(orderInfoService.save(orderInfo));
+    public R save(GoodsOrderInfo goodsOrderInfo) {
+        return R.ok(orderInfoService.save(goodsOrderInfo));
     }
 
     /**
      * 修改订单信息
      *
-     * @param orderInfo 订单信息
+     * @param goodsOrderInfo 订单信息
      * @return 结果
      */
     @PutMapping
-    public R edit(OrderInfo orderInfo) {
-        return R.ok(orderInfoService.updateById(orderInfo));
+    public R edit(GoodsOrderInfo goodsOrderInfo) {
+        return R.ok(orderInfoService.updateById(goodsOrderInfo));
     }
 
     /**

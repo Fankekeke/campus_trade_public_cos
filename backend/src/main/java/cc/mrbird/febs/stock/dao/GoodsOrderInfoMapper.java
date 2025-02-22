@@ -1,6 +1,6 @@
 package cc.mrbird.febs.stock.dao;
 
-import cc.mrbird.febs.stock.entity.OrderInfo;
+import cc.mrbird.febs.stock.entity.GoodsOrderInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,16 +13,16 @@ import java.util.List;
 /**
  * @author FanK
  */
-public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
+public interface GoodsOrderInfoMapper extends BaseMapper<GoodsOrderInfo> {
 
     /**
      * 分页获取订单信息
      *
      * @param page      分页对象
-     * @param orderInfo 订单信息
+     * @param goodsOrderInfo 订单信息
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> selectOrderPage(Page<OrderInfo> page, @Param("orderInfo") OrderInfo orderInfo);
+    IPage<LinkedHashMap<String, Object>> selectOrderPage(Page<GoodsOrderInfo> page, @Param("goodsOrderInfo") GoodsOrderInfo goodsOrderInfo);
 
     /**
      * 查询总收益
@@ -36,14 +36,14 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
      *
      * @return 结果
      */
-    List<OrderInfo> selectOrderByMonth(@Param("pharmacyId") Integer pharmacyId);
+    List<GoodsOrderInfo> selectOrderByMonth(@Param("pharmacyId") Integer pharmacyId);
 
     /**
      * 获取本年订单信息
      *
      * @return 结果
      */
-    List<OrderInfo> selectOrderByYear(@Param("pharmacyId") Integer pharmacyId);
+    List<GoodsOrderInfo> selectOrderByYear(@Param("pharmacyId") Integer pharmacyId);
 
     /**
      * 十天内订单数量统计
@@ -81,5 +81,5 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
      * @param month 月度
      * @return 结果
      */
-    List<OrderInfo> selectOrderByCheckMonth(@Param("year") Integer year, @Param("month") Integer month);
+    List<GoodsOrderInfo> selectOrderByCheckMonth(@Param("year") Integer year, @Param("month") Integer month);
 }

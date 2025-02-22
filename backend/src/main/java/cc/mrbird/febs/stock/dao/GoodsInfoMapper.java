@@ -20,5 +20,5 @@ public interface GoodsInfoMapper extends BaseMapper<GoodsInfo> {
      * @param goodsInfo 商品信息
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> selectDrugPage(Page<GoodsInfo> page, @Param("drugInfo") GoodsInfo goodsInfo);
+    IPage<LinkedHashMap<String, Object>> selectDrugPage(Page<GoodsInfo> page, @Param("goodsInfo") GoodsInfo goodsInfo);
 }

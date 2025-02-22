@@ -186,7 +186,7 @@ export default {
           }
         }
       }, {
-        title: '所属药店',
+        title: '所属商家',
         dataIndex: 'pharmacyName',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -308,7 +308,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/order-info/' + ids).then(() => {
+          that.$delete('/stock/order-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -381,8 +381,8 @@ export default {
       if (params.status === undefined) {
         delete params.status
       }
-      params.pharmacyId = this.currentUser.userId
-      this.$get('/cos/order-info/page', {
+      // params.pharmacyId = this.currentUser.userId
+      this.$get('/stock/order-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

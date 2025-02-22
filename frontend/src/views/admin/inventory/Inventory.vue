@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="药品名称"
+                label="商品名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.drugName"/>
@@ -99,19 +99,19 @@ export default {
     }),
     columns () {
       return [{
-        title: '药店名称',
+        title: '商家名称',
         dataIndex: 'pharmacyName'
       }, {
-        title: '药店编号',
+        title: '商家编号',
         dataIndex: 'pharmacyCode'
       }, {
-        title: '药品名称',
+        title: '商品名称',
         dataIndex: 'drugName'
       }, {
         title: '品牌',
         dataIndex: 'brand'
       }, {
-        title: '药品图片',
+        title: '商品图片',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.images) return <a-avatar shape="square" icon="user" />
@@ -133,22 +133,33 @@ export default {
           }
         }
       }, {
-        title: '所属分类',
-        dataIndex: 'category',
+        title: '通用名',
+        dataIndex: 'commonName',
         customRender: (text, row, index) => {
-          switch (text) {
-            case 1:
-              return <a-tag>可卡因</a-tag>
-            case 2:
-              return <a-tag>维生素制剂</a-tag>
-            case 3:
-              return <a-tag>鱼肝油</a-tag>
-            case 4:
-              return <a-tag>药物饮料</a-tag>
-            case 5:
-              return <a-tag>膳食纤维</a-tag>
-            default:
-              return '- -'
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '型号',
+        dataIndex: 'dosageForm',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
+          }
+        }
+      }, {
+        title: '规格',
+        dataIndex: 'usages',
+        customRender: (text, row, index) => {
+          if (text !== null) {
+            return text
+          } else {
+            return '- -'
           }
         }
       }]
@@ -202,7 +213,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/pharmacy-inventory/' + ids).then(() => {
+          that.$delete('/stock/pharmacy-inventory/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -275,8 +286,8 @@ export default {
       if (params.type === undefined) {
         delete params.type
       }
-      params.pharmacyId = this.currentUser.userId
-      this.$get('/cos/pharmacy-inventory/page', {
+      // params.pharmacyId = this.currentUser.userId
+      this.$get('/stock/pharmacy-inventory/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

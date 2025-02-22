@@ -46,7 +46,7 @@ public class PharmacyInfo implements Serializable {
     /**
      * 营业状态（1.营业中 2.歇业）
      */
-    private Integer businessStatus;
+    private String businessStatus;
 
     /**
      * 资质照片

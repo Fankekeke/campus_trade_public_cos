@@ -21,14 +21,6 @@
                 <a-input v-model="queryParams.userName"/>
               </a-form-item>
             </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item
-                label="药店名称"
-                :labelCol="{span: 5}"
-                :wrapperCol="{span: 18, offset: 1}">
-                <a-input v-model="queryParams.pharmacyName"/>
-              </a-form-item>
-            </a-col>
           </div>
           <span style="float: right; margin-top: 3px;">
             <a-button type="primary" @click="search">查询</a-button>
@@ -39,6 +31,7 @@
     </div>
     <div>
       <div class="operator">
+<!--        <a-button type="primary" ghost @click="add">添加订单</a-button>-->
         <a-button @click="batchDelete">删除</a-button>
       </div>
       <!-- 表格区域 -->
@@ -63,23 +56,32 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <a-icon type="file-search" @click="orderViewOpen(record)" title="详 情"></a-icon>
-          <a-icon v-if="record.orderStatus ==  0" type="alipay" @click="orderPay(record)" title="支 付" style="margin-left: 15px"></a-icon>
-          <a-icon v-if="record.orderStatus ==  2" type="shopping" theme="twoTone" twoToneColor="#4a9ff5" @click="orderReceive(record)" title="收 货" style="margin-left: 15px"></a-icon>
-          <a-icon v-if="!record.evaluateFlag && record.orderStatus ==  3" type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="orderEvaluateOpen(record)" title="评 价" style="margin-left: 15px"></a-icon>
+          <a-icon v-if="record.orderStatus == 1" type="setting" theme="twoTone" twoToneColor="#4a9ff5" @click="orderAuditOpen(record)" title="修 改" style="margin-left: 15px"></a-icon>
         </template>
       </a-table>
     </div>
+    <order-audit
+      @close="handleorderAuditViewClose"
+      @success="handleorderAuditViewSuccess"
+      :orderAuditShow="orderAuditView.visiable"
+      :orderAuditData="orderAuditView.data">
+    </order-audit>
+    <order-status
+      @close="handleorderStatusViewClose"
+      @success="handleorderStatusViewSuccess"
+      :orderStatusShow="orderStatusView.visiable"
+      :orderStatusData="orderStatusView.data">
+    </order-status>
     <order-view
       @close="handleorderViewClose"
       :orderShow="orderView.visiable"
       :orderData="orderView.data">
     </order-view>
-    <order-evaluate
+    <order-add
       @close="handleorderAddClose"
       @success="handleorderAddSuccess"
-      :evaluateAddVisiable="orderEvaluateView.visiable"
-      :orderData="orderEvaluateView.data">
-    </order-evaluate>
+      :orderAddShow="orderAdd.visiable">
+    </order-add>
   </a-card>
 </template>
 
@@ -87,13 +89,15 @@
 import RangeDate from '@/components/datetime/RangeDate'
 import {mapState} from 'vuex'
 import moment from 'moment'
-import OrderEvaluate from './OrderEvaluate'
+import OrderAdd from './OrderAdd'
+import OrderAudit from './OrderAudit'
 import OrderView from './OrderView'
+import OrderStatus from './OrderStatus.vue'
 moment.locale('zh-cn')
 
 export default {
   name: 'order',
-  components: {OrderView, RangeDate, OrderEvaluate},
+  components: {OrderView, OrderAudit, RangeDate, OrderStatus, OrderAdd},
   data () {
     return {
       advanced: false,
@@ -108,10 +112,6 @@ export default {
         data: null
       },
       orderStatusView: {
-        visiable: false,
-        data: null
-      },
-      orderEvaluateView: {
         visiable: false,
         data: null
       },
@@ -186,7 +186,7 @@ export default {
           }
         }
       }, {
-        title: '所属药店',
+        title: '所属商家',
         dataIndex: 'pharmacyName',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -233,33 +233,6 @@ export default {
     this.fetch()
   },
   methods: {
-    orderReceive (record) {
-      this.$get('/cos/order-info/edit/status', {orderId: record.id, status: 3}).then(() => {
-        this.$message.success('收货成功')
-        this.search()
-      })
-    },
-    orderPay (record) {
-      let data = { outTradeNo: record.code, subject: `${record.createDate}缴费信息`, totalAmount: record.totalCost, body: '' }
-      this.$post('/cos/pay/alipay', data).then((r) => {
-        // console.log(r.data.msg)
-        // 添加之前先删除一下，如果单页面，页面不刷新，添加进去的内容会一直保留在页面中，二次调用form表单会出错
-        const divForm = document.getElementsByTagName('div')
-        if (divForm.length) {
-          document.body.removeChild(divForm[0])
-        }
-        const div = document.createElement('div')
-        div.innerHTML = r.data.msg // data就是接口返回的form 表单字符串
-        // console.log(div.innerHTML)
-        document.body.appendChild(div)
-        document.forms[0].setAttribute('target', '_self') // 新开窗口跳转
-        document.forms[0].submit()
-      })
-    },
-    orderEvaluateOpen (row) {
-      this.orderEvaluateView.data = row
-      this.orderEvaluateView.visiable = true
-    },
     orderStatusOpen (row) {
       this.orderStatusView.data = row
       this.orderStatusView.visiable = true
@@ -301,11 +274,11 @@ export default {
       this.orderAdd.visiable = true
     },
     handleorderAddClose () {
-      this.orderEvaluateView.visiable = false
+      this.orderAdd.visiable = false
     },
     handleorderAddSuccess () {
-      this.orderEvaluateView.visiable = false
-      this.$message.success('订单评价成功！')
+      this.orderAdd.visiable = false
+      this.$message.success('添加平台订单成功')
       this.search()
     },
     edit (record) {
@@ -335,7 +308,7 @@ export default {
         centered: true,
         onOk () {
           let ids = that.selectedRowKeys.join(',')
-          that.$delete('/cos/order-info/' + ids).then(() => {
+          that.$delete('/stock/order-info/' + ids).then(() => {
             that.$message.success('删除成功')
             that.selectedRowKeys = []
             that.search()
@@ -408,8 +381,8 @@ export default {
       if (params.status === undefined) {
         delete params.status
       }
-      params.userId = this.currentUser.userId
-      this.$get('/cos/order-info/page', {
+      params.pharmacyId = this.currentUser.userId
+      this.$get('/stock/order-info/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

@@ -26,6 +26,7 @@
         di.images,
         di.pharmacy_id,
         phi.name AS pharmacyName,
+        phi.images AS pharmacyImages,
         phi.address,
         phi.legal_person,
         phi.phone as pharmacyPhone

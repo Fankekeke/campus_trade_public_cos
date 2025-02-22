@@ -22,8 +22,13 @@ export default {
   },
   mounted () {
     if (getUrlKey('out_trade_no') !== null) {
-      this.$get('/cos/order-info/payment', { orderCode: getUrlKey('out_trade_no') }).then((r) => {
-      })
+      let orderCode = getUrlKey('out_trade_no')
+      // 如果订单编号包含GOR-
+      if (orderCode.indexOf('GOR-') !== -1) {
+        this.$get('/stock/order-info/rollback', { orderCode: getUrlKey('out_trade_no') }).then((r) => {})
+      } else {
+        this.$get('/cos/order-info/payment', { orderCode: getUrlKey('out_trade_no') }).then((r) => {})
+      }
     }
   }
 }

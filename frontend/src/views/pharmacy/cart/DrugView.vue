@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="药品详情"
+    title="商品详情"
     :maskClosable="false"
     width=1250
     placement="right"
@@ -13,11 +13,11 @@
         <div id="areas" style="width: 100%;height: 350px;box-shadow: 3px 3px 3px rgba(0, 0, 0, .2);background:#ec9e3c;color:#fff"></div>
       </a-card>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">药品信息</span></a-col>
-        <a-col :span="8"><b>药品名称：</b>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">商品信息</span></a-col>
+        <a-col :span="8"><b>商品名称：</b>
           {{ drugInfo.name }}
         </a-col>
-        <a-col :span="8"><b>药品编号：</b>
+        <a-col :span="8"><b>商品编号：</b>
           {{ drugInfo.code }}
         </a-col>
         <a-col :span="8"><b>所属品牌：</b>
@@ -33,16 +33,16 @@
           <span v-if="drugInfo.category == 4">药物饮料</span>
           <span v-if="drugInfo.category == 5">膳食纤维</span>
         </a-col>
-        <a-col :span="8"><b>药品类别：</b>
+        <a-col :span="8"><b>商品类别：</b>
           <span v-if="drugInfo.classification == 1">中药材</span>
           <span v-if="drugInfo.classification == 2">中药饮片</span>
           <span v-if="drugInfo.classification == 3">中西成药</span>
           <span v-if="drugInfo.classification == 4">化学原料药</span>
           <span v-if="drugInfo.classification == 5">抗生素</span>
-          <span v-if="drugInfo.classification == 6">生化药品</span>
-          <span v-if="drugInfo.classification == 7">放射性药品</span>
+          <span v-if="drugInfo.classification == 6">生化商品</span>
+          <span v-if="drugInfo.classification == 7">放射性商品</span>
           <span v-if="drugInfo.classification == 8">血清</span>
-          <span v-if="drugInfo.classification == 9">诊断药品</span>
+          <span v-if="drugInfo.classification == 9">诊断商品</span>
         </a-col>
         <a-col :span="8"><b>通用名：</b>
           {{ drugInfo.commonName }}
@@ -50,21 +50,21 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>剂型：</b>
+        <a-col :span="8"><b>型号：</b>
           {{ drugInfo.dosageForm }}
         </a-col>
-        <a-col :span="16"><b>用法：</b>
+        <a-col :span="16"><b>规格：</b>
           {{ drugInfo.usages }}
         </a-col>
         <br/>
         <br/>
-        <a-col :span="24"><b>适用症状：</b>
+        <a-col :span="24"><b>保存状态：</b>
           {{ drugInfo.applicableSymptoms }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="24"><b>适用疾病：</b>
+        <a-col :span="24"><b>国产/进口：</b>
           {{ drugInfo.applicableDisease }}
         </a-col>
         <br/>
@@ -99,7 +99,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">药品图片</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">商品图片</span></a-col>
         <a-col :span="24">
           <a-upload
             name="avatar"

@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="修改药品" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="修改商品" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose">
         取消
@@ -11,7 +11,7 @@
     <a-form :form="form" layout="vertical">
       <a-row :gutter="20">
         <a-col :span="6">
-          <a-form-item label='药品名称' v-bind="formItemLayout">
+          <a-form-item label='商品名称' v-bind="formItemLayout">
             <a-input v-decorator="[
             'name',
             { rules: [{ required: true, message: '请输入名称!' }] }
@@ -26,38 +26,38 @@
             ]"/>
           </a-form-item>
         </a-col>
-        <a-col :span="6">
-          <a-form-item label='所属分类' v-bind="formItemLayout">
-            <a-select v-decorator="[
-              'category',
-              { rules: [{ required: true, message: '请输入所属分类!' }] }
-              ]">
-              <a-select-option value="1">可卡因</a-select-option>
-              <a-select-option value="2">维生素制剂</a-select-option>
-              <a-select-option value="3">鱼肝油</a-select-option>
-              <a-select-option value="4">药物饮料</a-select-option>
-              <a-select-option value="5">膳食纤维</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-form-item label='药品类别' v-bind="formItemLayout">
-            <a-select v-decorator="[
-              'classification',
-              { rules: [{ required: true, message: '请输入药品类别!' }] }
-              ]">
-              <a-select-option value="1">中药材</a-select-option>
-              <a-select-option value="2">中药饮片</a-select-option>
-              <a-select-option value="3">中西成药</a-select-option>
-              <a-select-option value="4">化学原料药</a-select-option>
-              <a-select-option value="5">抗生素</a-select-option>
-              <a-select-option value="6">生化药品</a-select-option>
-              <a-select-option value="7">放射性药品</a-select-option>
-              <a-select-option value="8">血清</a-select-option>
-              <a-select-option value="9">诊断药品</a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
+<!--        <a-col :span="6">-->
+<!--          <a-form-item label='所属分类' v-bind="formItemLayout">-->
+<!--            <a-select v-decorator="[-->
+<!--              'category',-->
+<!--              { rules: [{ required: true, message: '请输入所属分类!' }] }-->
+<!--              ]">-->
+<!--              <a-select-option value="1">可卡因</a-select-option>-->
+<!--              <a-select-option value="2">维生素制剂</a-select-option>-->
+<!--              <a-select-option value="3">鱼肝油</a-select-option>-->
+<!--              <a-select-option value="4">药物饮料</a-select-option>-->
+<!--              <a-select-option value="5">膳食纤维</a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col :span="6">-->
+<!--          <a-form-item label='商品类别' v-bind="formItemLayout">-->
+<!--            <a-select v-decorator="[-->
+<!--              'classification',-->
+<!--              { rules: [{ required: true, message: '请输入商品类别!' }] }-->
+<!--              ]">-->
+<!--              <a-select-option value="1">中药材</a-select-option>-->
+<!--              <a-select-option value="2">中药饮片</a-select-option>-->
+<!--              <a-select-option value="3">中西成药</a-select-option>-->
+<!--              <a-select-option value="4">化学原料药</a-select-option>-->
+<!--              <a-select-option value="5">抗生素</a-select-option>-->
+<!--              <a-select-option value="6">生化商品</a-select-option>-->
+<!--              <a-select-option value="7">放射性商品</a-select-option>-->
+<!--              <a-select-option value="8">血清</a-select-option>-->
+<!--              <a-select-option value="9">诊断商品</a-select-option>-->
+<!--            </a-select>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col :span="6">
           <a-form-item label='通用名' v-bind="formItemLayout">
             <a-input v-decorator="[
@@ -66,28 +66,28 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label='剂型' v-bind="formItemLayout">
+          <a-form-item label='型号' v-bind="formItemLayout">
             <a-input v-decorator="[
             'dosageForm'
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label='用法' v-bind="formItemLayout">
+          <a-form-item label='规格' v-bind="formItemLayout">
             <a-input v-decorator="[
             'usages'
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='适用症状' v-bind="formItemLayout">
+          <a-form-item label='保存状态' v-bind="formItemLayout">
             <a-input v-decorator="[
             'applicableSymptoms'
             ]"/>
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='适用疾病' v-bind="formItemLayout">
+          <a-form-item label='国产/进口' v-bind="formItemLayout">
             <a-input v-decorator="[
             'applicableDisease'
             ]"/>
@@ -143,7 +143,7 @@
           >
         </a-col>
         <a-col :span="24">
-          <a-form-item label='药品图片' v-bind="formItemLayout">
+          <a-form-item label='商品图片' v-bind="formItemLayout">
             <a-upload
               name="avatar"
               action="http://127.0.0.1:9527/file/fileUpload/"
@@ -278,7 +278,7 @@ export default {
         values.images = images.length > 0 ? images.join(',') : null
         if (!err) {
           this.loading = true
-          this.$put('/cos/drug-info', {
+          this.$put('/stock/drug-info', {
             ...values
           }).then((r) => {
             this.reset()

@@ -60,22 +60,22 @@ public class GoodsInfo implements Serializable {
     private String commonName;
 
     /**
-     * 剂型
+     * 型号
      */
     private String dosageForm;
 
     /**
-     * 用法
+     * 规格
      */
     private String usages;
 
     /**
-     * 适用症状
+     * 保存状态
      */
     private String applicableSymptoms;
 
     /**
-     * 适用疾病
+     * 国产/进口
      */
     private String applicableDisease;
 

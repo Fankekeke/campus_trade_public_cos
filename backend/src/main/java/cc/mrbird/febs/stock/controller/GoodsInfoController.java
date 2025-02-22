@@ -70,6 +70,12 @@ public class GoodsInfoController {
         return R.ok(drugInfoService.list());
     }
 
+    @GetMapping("/queryGoodsByPharmacyId")
+    public R queryGoodsByPharmacyId(Integer pharmacyId) {
+        PharmacyInfo pharmacyInfo = pharmacyInfoService.getOne(Wrappers.<PharmacyInfo>lambdaQuery().eq(PharmacyInfo::getUserId, pharmacyId));
+        return R.ok(drugInfoService.list(Wrappers.<GoodsInfo>lambdaQuery().eq(GoodsInfo::getPharmacyId, pharmacyInfo.getId())));
+    }
+
     /**
      * 新增商品信息
      *

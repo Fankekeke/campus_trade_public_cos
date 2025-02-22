@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="show" title="药品详情" @cancel="onClose" :width="800">
+  <a-modal v-model="show" title="商品详情" @cancel="onClose" :width="800">
     <template slot="footer">
       <a-button key="back" @click="onClose" type="danger">
         关闭
@@ -7,11 +7,11 @@
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="drugData !== null">
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">药品信息</span></a-col>
-        <a-col :span="8"><b>药品名称：</b>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">商品信息</span></a-col>
+        <a-col :span="8"><b>商品名称：</b>
           {{ drugData.name }}
         </a-col>
-        <a-col :span="8"><b>药品编号：</b>
+        <a-col :span="8"><b>商品编号：</b>
           {{ drugData.code }}
         </a-col>
         <a-col :span="8"><b>所属品牌：</b>
@@ -20,45 +20,45 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>所属分类：</b>
-          <span v-if="drugData.category == 1">可卡因</span>
-          <span v-if="drugData.category == 2">维生素制剂</span>
-          <span v-if="drugData.category == 3">鱼肝油</span>
-          <span v-if="drugData.category == 4">药物饮料</span>
-          <span v-if="drugData.category == 5">膳食纤维</span>
-        </a-col>
-        <a-col :span="8"><b>药品类别：</b>
-          <span v-if="drugData.classification == 1">中药材</span>
-          <span v-if="drugData.classification == 2">中药饮片</span>
-          <span v-if="drugData.classification == 3">中西成药</span>
-          <span v-if="drugData.classification == 4">化学原料药</span>
-          <span v-if="drugData.classification == 5">抗生素</span>
-          <span v-if="drugData.classification == 6">生化药品</span>
-          <span v-if="drugData.classification == 7">放射性药品</span>
-          <span v-if="drugData.classification == 8">血清</span>
-          <span v-if="drugData.classification == 9">诊断药品</span>
-        </a-col>
+<!--        <a-col :span="8"><b>所属分类：</b>-->
+<!--          <span v-if="drugData.category == 1">可卡因</span>-->
+<!--          <span v-if="drugData.category == 2">维生素制剂</span>-->
+<!--          <span v-if="drugData.category == 3">鱼肝油</span>-->
+<!--          <span v-if="drugData.category == 4">药物饮料</span>-->
+<!--          <span v-if="drugData.category == 5">膳食纤维</span>-->
+<!--        </a-col>-->
+<!--        <a-col :span="8"><b>商品类别：</b>-->
+<!--          <span v-if="drugData.classification == 1">中药材</span>-->
+<!--          <span v-if="drugData.classification == 2">中药饮片</span>-->
+<!--          <span v-if="drugData.classification == 3">中西成药</span>-->
+<!--          <span v-if="drugData.classification == 4">化学原料药</span>-->
+<!--          <span v-if="drugData.classification == 5">抗生素</span>-->
+<!--          <span v-if="drugData.classification == 6">生化商品</span>-->
+<!--          <span v-if="drugData.classification == 7">放射性商品</span>-->
+<!--          <span v-if="drugData.classification == 8">血清</span>-->
+<!--          <span v-if="drugData.classification == 9">诊断商品</span>-->
+<!--        </a-col>-->
         <a-col :span="8"><b>通用名：</b>
           {{ drugData.commonName }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="8"><b>剂型：</b>
+        <a-col :span="8"><b>型号：</b>
           {{ drugData.dosageForm }}
         </a-col>
-        <a-col :span="16"><b>用法：</b>
+        <a-col :span="16"><b>规格：</b>
           {{ drugData.usages }}
         </a-col>
         <br/>
         <br/>
-        <a-col :span="24"><b>适用症状：</b>
+        <a-col :span="24"><b>保存状态：</b>
           {{ drugData.applicableSymptoms }}
         </a-col>
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="24"><b>适用疾病：</b>
+        <a-col :span="24"><b>国产/进口：</b>
           {{ drugData.applicableDisease }}
         </a-col>
         <br/>
@@ -93,7 +93,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">药品图片</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">商品图片</span></a-col>
         <a-col :span="24">
           <a-upload
             name="avatar"

@@ -1,30 +1,28 @@
 package cc.mrbird.febs.stock.service;
 
 import cc.mrbird.febs.common.exception.FebsException;
-import cc.mrbird.febs.stock.entity.OrderInfo;
+import cc.mrbird.febs.stock.entity.GoodsOrderInfo;
+import cc.mrbird.febs.stock.entity.vo.GoodsOrderInfoVo;
 import cc.mrbird.febs.stock.entity.vo.OrderDetailVo;
-import cc.mrbird.febs.stock.entity.vo.OrderInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * @author FanK
  */
-public interface IOrderInfoService extends IService<OrderInfo> {
+public interface IGoodsOrderInfoService extends IService<GoodsOrderInfo> {
 
     /**
      * 分页获取订单信息
      *
      * @param page      分页对象
-     * @param orderInfo 订单信息
+     * @param goodsOrderInfo 订单信息
      * @return 结果
      */
-    IPage<LinkedHashMap<String, Object>> selectOrderPage(Page<OrderInfo> page, OrderInfo orderInfo);
+    IPage<LinkedHashMap<String, Object>> selectOrderPage(Page<GoodsOrderInfo> page, GoodsOrderInfo goodsOrderInfo);
 
     /**
      * 添加订单信息
@@ -32,7 +30,7 @@ public interface IOrderInfoService extends IService<OrderInfo> {
      * @param orderInfoVo 订单信息
      * @return 结果
      */
-    boolean orderAdd(OrderInfoVo orderInfoVo, boolean flag);
+    boolean orderAdd(GoodsOrderInfoVo orderInfoVo, boolean flag);
 
     /**
      * 订单付款
@@ -73,4 +71,12 @@ public interface IOrderInfoService extends IService<OrderInfo> {
      * @return 结果
      */
     boolean orderSubmit(OrderDetailVo orderDetailVo) throws FebsException;
+
+    /**
+     * 用户提交支付订单
+     *
+     * @param orderDetailVo 订单信息
+     * @return 结果
+     */
+    String orderSubmitPay(OrderDetailVo orderDetailVo) throws FebsException;
 }

@@ -34,7 +34,7 @@ public class InventoryStatisticsServiceImpl extends ServiceImpl<InventoryStatist
     /**
      * 获取商品出入库详情
      *
-     * @param pharmacyId 药房ID
+     * @param pharmacyId 商家ID
      * @param drugId     商品ID
      * @return 结果
      */

@@ -22,7 +22,7 @@
         order_detail od
         left join drug_info di on
         (di.id = od.drug_id)
-        left join order_info oi on
+        left join goods_order_info oi on
         (oi.id = od.order_id)
         left join user_info ui on
         (ui.id = oi.user_id)
@@ -63,7 +63,7 @@
         order_detail od
         left join drug_info di on
         (di.id = od.drug_id)
-        left join order_info oi on
+        left join goods_order_info oi on
         (oi.id = od.order_id)
         left join user_info ui on
         (ui.id = oi.user_id)

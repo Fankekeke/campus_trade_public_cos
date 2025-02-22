@@ -6,14 +6,14 @@
       </a-button>
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="orderData !== null">
-      <div style="padding-left: 24px;padding-right: 24px;margin-bottom: 50px;margin-top: 50px">
-        <a-steps :current="current" progress-dot size="small">
-          <a-step title="待付款" />
-          <a-step title="已下单" />
-          <a-step title="配送中" />
-          <a-step title="已收货" />
-        </a-steps>
-      </div>
+<!--      <div style="padding-left: 24px;padding-right: 24px;margin-bottom: 50px;margin-top: 50px">-->
+<!--        <a-steps :current="current" progress-dot size="small">-->
+<!--          <a-step title="待付款" />-->
+<!--          <a-step title="已下单" />-->
+<!--          <a-step title="配送中" />-->
+<!--          <a-step title="已收货" />-->
+<!--        </a-steps>-->
+<!--      </div>-->
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
         <a-col :span="8"><b>工单编号：</b>
@@ -43,11 +43,11 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">药店信息</span></a-col>
-        <a-col :span="8"><b>药店名称：</b>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">商家信息</span></a-col>
+        <a-col :span="8"><b>商家名称：</b>
             {{ orderData.pharmacyName }}
           </a-col>
-        <a-col :span="8"><b>药店地址：</b>
+        <a-col :span="8"><b>商家地址：</b>
           {{ orderData.address }}
         </a-col>
         <a-col :span="8"><b>联系方式：</b>
@@ -56,20 +56,13 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">购买药品信息</span></a-col>
+        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">购买商品信息</span></a-col>
          <a-col :span="24">
           <a-table :columns="columns" :data-source="durgList">
           </a-table>
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">当前物流</span></a-col>
-         <a-col :span="24">
-          <a-table :columns="logisticsColumns" :data-source="logisticsList">
-          </a-table>
-        </a-col>
-      </a-row>
     </div>
   </a-modal>
 </template>
@@ -106,7 +99,7 @@ export default {
     },
     columns () {
       return [{
-        title: '药品名称',
+        title: '商品名称',
         dataIndex: 'drugName'
       }, {
         title: '品牌',
@@ -115,7 +108,7 @@ export default {
         title: '数量',
         dataIndex: 'quantity'
       }, {
-        title: '药品图片',
+        title: '商品图片',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.images) return <a-avatar shape="square" icon="user" />
@@ -164,13 +157,9 @@ export default {
   },
   methods: {
     dataInit (orderId) {
-      // 药品信息
-      this.$get(`/cos/order-detail/detail/${orderId}`).then((r) => {
+      // 商品信息
+      this.$get(`/stock/order-detail/detail/${orderId}`).then((r) => {
         this.durgList = r.data.data
-      })
-      // 物流信息
-      this.$get(`/cos/logistics-info/order/${orderId}`).then((r) => {
-        this.logisticsList = r.data.data
       })
     },
     imagesInit (images) {

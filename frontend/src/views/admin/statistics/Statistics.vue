@@ -7,7 +7,7 @@
           <div :class="advanced ? null: 'fold'">
             <a-col :md="6" :sm="24">
               <a-form-item
-                label="药品名称"
+                label="商品名称"
                 :labelCol="{span: 5}"
                 :wrapperCol="{span: 18, offset: 1}">
                 <a-input v-model="queryParams.drugName"/>
@@ -105,27 +105,11 @@ export default {
           }
         }
       }, {
-        title: '药品名称',
+        title: '商品名称',
         dataIndex: 'drugName'
       }, {
         title: '品牌',
         dataIndex: 'brand'
-      }, {
-        title: '操作员',
-        dataIndex: 'staffName',
-        customRender: (text, record, index) => {
-          if (text !== null) {
-            if (!record.staffImages) return text
-            return <a-popover>
-              <template slot="content">
-                <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.staffImages.split(',')[0] } />
-              </template>
-              {{ text }}
-            </a-popover>
-          } else {
-            return '- -'
-          }
-        }
       }, {
         title: '数量',
         dataIndex: 'quantity',
@@ -137,7 +121,19 @@ export default {
           }
         }
       }, {
-        title: '药店名称',
+        title: '商家图片',
+        dataIndex: 'pharmacyImages',
+        customRender: (text, record, index) => {
+          if (!record.pharmacyImages) return <a-avatar shape="square" icon="user" />
+          return <a-popover>
+            <template slot="content">
+              <a-avatar shape="square" size={132} icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.pharmacyImages.split(',')[0] } />
+            </template>
+            <a-avatar shape="square" icon="user" src={ 'http://127.0.0.1:9527/imagesWeb/' + record.pharmacyImages.split(',')[0] } />
+          </a-popover>
+        }
+      }, {
+        title: '商家名称',
         dataIndex: 'pharmacyName',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -147,7 +143,7 @@ export default {
           }
         }
       }, {
-        title: '药品图片',
+        title: '商品图片',
         dataIndex: 'images',
         customRender: (text, record, index) => {
           if (!record.images) return <a-avatar shape="square" icon="user" />
@@ -159,7 +155,7 @@ export default {
           </a-popover>
         }
       }, {
-        title: '药店地址',
+        title: '商家地址',
         dataIndex: 'address',
         customRender: (text, row, index) => {
           if (text !== null) {
@@ -302,8 +298,8 @@ export default {
       if (params.type === undefined) {
         delete params.type
       }
-      params.pharmacyId = this.currentUser.userId
-      this.$get('/cos/inventory-statistics/page', {
+      // params.pharmacyId = this.currentUser.userId
+      this.$get('/stock/inventory-statistics/page', {
         ...params
       }).then((r) => {
         let data = r.data.data

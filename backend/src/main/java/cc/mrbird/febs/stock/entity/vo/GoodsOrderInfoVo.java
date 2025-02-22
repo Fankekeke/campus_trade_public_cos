@@ -1,12 +1,9 @@
 package cc.mrbird.febs.stock.entity.vo;
 
-import cc.mrbird.febs.stock.entity.OrderDetail;
-import cc.mrbird.febs.stock.entity.OrderInfo;
+import cc.mrbird.febs.stock.entity.GoodsOrderInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.util.List;
 
 /**
  * 订单管理
@@ -16,7 +13,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class OrderInfoVo extends OrderInfo {
+public class GoodsOrderInfoVo extends GoodsOrderInfo {
 
     private String orderDetailList;
 
