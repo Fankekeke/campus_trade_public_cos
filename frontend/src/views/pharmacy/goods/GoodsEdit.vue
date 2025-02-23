@@ -87,7 +87,7 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label='国产/进口' v-bind="formItemLayout">
+          <a-form-item label='生产地' v-bind="formItemLayout">
             <a-input v-decorator="[
             'applicableDisease'
             ]"/>
@@ -103,7 +103,7 @@
           >
         </a-col>
         <a-col :span="6">
-          <a-form-item label='使用剂量' v-bind="formItemLayout">
+          <a-form-item label='使用方法' v-bind="formItemLayout">
             <a-input v-decorator="[
             'dosageUse'
             ]"/>

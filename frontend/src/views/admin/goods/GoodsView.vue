@@ -58,7 +58,7 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
-        <a-col :span="24"><b>国产/进口：</b>
+        <a-col :span="24"><b>生产地：</b>
           {{ drugData.applicableDisease }}
         </a-col>
         <br/>
@@ -66,7 +66,7 @@
         <a-col :span="8"><b>包装清单：</b>
           {{ drugData.packingList }}
         </a-col>
-        <a-col :span="16"><b>使用剂量：</b>
+        <a-col :span="16"><b>使用方法：</b>
           {{ drugData.dosageUse }}
         </a-col>
       </a-row>
