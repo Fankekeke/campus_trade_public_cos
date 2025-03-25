@@ -26,6 +26,7 @@
         ui.code,
         ui.name as userName,
         ui.phone,
+        ui.integral,
         ct.name as typeName
         from
         commodity_info coi

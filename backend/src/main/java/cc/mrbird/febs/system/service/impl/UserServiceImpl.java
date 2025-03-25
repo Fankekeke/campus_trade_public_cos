@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -187,6 +188,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userInfo.setCode("UR-" + System.currentTimeMillis());
         userInfo.setUserId(user.getUserId());
         userInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        userInfo.setIntegral(new BigDecimal(80));
         userInfoService.save(userInfo);
 
         UserRole ur = new UserRole();

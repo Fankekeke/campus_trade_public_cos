@@ -3,9 +3,9 @@ package cc.mrbird.febs.cos.controller;
 
 import cc.mrbird.febs.common.utils.R;
 import cc.mrbird.febs.cos.entity.MessageInfo;
-import cc.mrbird.febs.cos.entity.StaffInfo;
+import cc.mrbird.febs.cos.entity.UserInfo;
 import cc.mrbird.febs.cos.service.IMessageInfoService;
-import cc.mrbird.febs.cos.service.IStaffInfoService;
+import cc.mrbird.febs.cos.service.IUserInfoService;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,7 +26,7 @@ public class MessageInfoController {
 
     private final IMessageInfoService messageInfoService;
 
-    private final IStaffInfoService staffInfoService;
+    private final IUserInfoService userInfoService;
 
     /**
      * 分页获取消息信息
@@ -73,7 +73,7 @@ public class MessageInfoController {
      */
     @GetMapping("/getMessageDetail")
     public R getMessageDetail(@RequestParam(value = "takeUser") Integer takeUser, @RequestParam(value = "sendUser") Integer sendUser) {
-        StaffInfo staffInfo = staffInfoService.getOne(Wrappers.<StaffInfo>lambdaQuery().eq(StaffInfo::getUserId, takeUser));
+        UserInfo staffInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, takeUser));
 //        if (takeUser.equals(staffInfo.getUserId())) {
 //            messageInfoService.update(Wrappers.<MessageInfo>lambdaUpdate().set(MessageInfo::getTaskStatus, 1)
 //                    .eq(MessageInfo::getTakeUser, takeUser).eq(MessageInfo::getSendUser, sendUser));
@@ -92,8 +92,8 @@ public class MessageInfoController {
      */
     @GetMapping("/messageListById")
     public R messageListById(@RequestParam Integer userId) {
-        StaffInfo staffInfo = staffInfoService.getOne(Wrappers.<StaffInfo>lambdaQuery().eq(StaffInfo::getUserId, userId));
-        return R.ok(messageInfoService.messageListById(staffInfo.getUserId()));
+        UserInfo staffInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userId));
+        return R.ok(messageInfoService.messageListById(Math.toIntExact(staffInfo.getUserId())));
     }
 
     /**
@@ -104,7 +104,7 @@ public class MessageInfoController {
      */
     @GetMapping("/contact/person")
     public R selectContactPerson(@RequestParam("userId") Integer userId, @RequestParam("flag") Integer flag) {
-        StaffInfo staffInfo =  staffInfoService.getOne(Wrappers.<StaffInfo>lambdaQuery().eq(StaffInfo::getUserId, userId));
+        UserInfo staffInfo =  userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, userId));
         return R.ok(messageInfoService.selectContactPerson(staffInfo.getId(), flag));
     }
 
@@ -128,7 +128,7 @@ public class MessageInfoController {
     public R save(MessageInfo messageInfo) {
         messageInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
         messageInfo.setTaskStatus(0);
-        StaffInfo staffInfo = staffInfoService.getOne(Wrappers.<StaffInfo>lambdaQuery().eq(StaffInfo::getUserId, messageInfo.getSendUser()));
+        UserInfo staffInfo = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, messageInfo.getSendUser()));
         if (staffInfo != null) {
             messageInfo.setSendUser(staffInfo.getId());
         }

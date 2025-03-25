@@ -16,6 +16,7 @@
         address,
         user_id,
         create_date,
+        integral,
         images
         from
         user_info

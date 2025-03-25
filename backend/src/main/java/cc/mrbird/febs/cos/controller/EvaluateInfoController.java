@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +80,25 @@ public class EvaluateInfoController {
         OrderInfo order = orderInfoService.getById(evaluateInfo.getOrderId());
         evaluateInfo.setUserId(order.getBuyUserId());
         evaluateInfo.setCreateDate(DateUtil.formatDateTime(new Date()));
+        // 获取卖家信息
+        UserInfo user = userInfoService.getOne(Wrappers.<UserInfo>lambdaQuery().eq(UserInfo::getUserId, order.getSellUserId()));
+        if (user != null) {
+            // 设置卖家信用积分 评分5加5积分，评分4+3，评分3不加不减，评分2减1，评分1减3，评分0减5
+            if (evaluateInfo.getScore().compareTo(new BigDecimal(5)) == 0) {
+                user.setIntegral(user.getIntegral() + 5);
+            } else if (evaluateInfo.getScore().compareTo(new BigDecimal(4)) == 0) {
+                user.setIntegral(user.getIntegral() + 3);
+            } else if (evaluateInfo.getScore().compareTo(new BigDecimal(3)) == 0) {
+                // 不加不减
+            } else if (evaluateInfo.getScore().compareTo(new BigDecimal(2)) == 0) {
+                user.setIntegral(user.getIntegral() - 1);
+            } else if (evaluateInfo.getScore().compareTo(new BigDecimal(1)) == 0) {
+                user.setIntegral(user.getIntegral() - 3);
+            } else if (evaluateInfo.getScore().compareTo(new BigDecimal(0)) == 0) {
+                user.setIntegral(user.getIntegral() - 5);
+            }
+            userInfoService.updateById(user);
+        }
         return R.ok(evaluateInfoService.save(evaluateInfo));
     }
 
